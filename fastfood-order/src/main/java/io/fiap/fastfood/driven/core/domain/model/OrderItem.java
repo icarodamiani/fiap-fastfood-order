@@ -1,11 +1,10 @@
 package io.fiap.fastfood.driven.core.domain.model;
 
-import java.math.BigDecimal;
 import java.util.Optional;
 
 public record OrderItem(
     String productId,
-    BigDecimal amount,
+    Integer amount,
     String quote) {
 
     Optional<String> getQuote() {
@@ -15,7 +14,7 @@ public record OrderItem(
 
     public static final class OrderItemBuilder {
         private String productId;
-        private BigDecimal amount;
+        private Integer amount;
         private String quote;
 
         private OrderItemBuilder() {}
@@ -27,7 +26,7 @@ public record OrderItem(
             return this;
         }
 
-        public OrderItemBuilder withAmount(BigDecimal amount) {
+        public OrderItemBuilder withAmount(Integer amount) {
             this.amount = amount;
             return this;
         }

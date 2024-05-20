@@ -7,3 +7,7 @@ aws:
 
 server:
   port: 8081
+
+grpc:
+  server:
+    port: 9091

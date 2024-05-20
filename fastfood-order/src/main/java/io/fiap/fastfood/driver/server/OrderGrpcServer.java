@@ -2,7 +2,6 @@ package io.fiap.fastfood.driver.server;
 
 
 import com.google.protobuf.Timestamp;
-import com.google.type.Decimal;
 import io.fiap.fastfood.FindAllOrderRequest;
 import io.fiap.fastfood.FindOrderByIdRequest;
 import io.fiap.fastfood.OrderItemResponse;
@@ -19,14 +18,12 @@ import io.grpc.stub.StreamObserver;
 import java.math.BigDecimal;
 import java.time.Instant;
 import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.util.List;
 import java.util.stream.Collectors;
 import net.devh.boot.grpc.server.service.GrpcService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 
 @GrpcService
 public class OrderGrpcServer extends OrderServiceGrpc.OrderServiceImplBase {
@@ -45,8 +42,6 @@ public class OrderGrpcServer extends OrderServiceGrpc.OrderServiceImplBase {
     public void saveOrder(SaveOrderRequest request, StreamObserver<OrderResponse> responseObserver) {
         service.create(Order.OrderBuilder.builder()
                 .withCustomerId(request.getCustomerId())
-                .withCreatedAt(toLocalDate(request.getCreatedAt()))
-                .withNumber(request.getNumber())
                 .withPayment(toPayment(request.getPayment()))
                 .withItems(toOrderItems(request.getItemsList()))
                 .build())
@@ -54,6 +49,7 @@ public class OrderGrpcServer extends OrderServiceGrpc.OrderServiceImplBase {
             .map(order ->
                 OrderResponse.newBuilder()
                     .setId(order.id())
+                    .setNumber(order.number())
                     .build()
             )
             .map(response -> {
@@ -66,16 +62,11 @@ public class OrderGrpcServer extends OrderServiceGrpc.OrderServiceImplBase {
 
     private List<OrderItem> toOrderItems(List<SaveOrderItemRequest> items) {
         return items.stream()
-            .map(item -> {
-                var builder = OrderItem.OrderItemBuilder.builder()
-                    .withProductId(item.getProductId())
-                    .withQuote(item.getQuote());
-
-                if (item.hasAmount()) {
-                    builder.withAmount(new BigDecimal(item.getAmount().getValue()));
-                }
-                return builder.build();
-            })
+            .map(item -> OrderItem.OrderItemBuilder.builder()
+                .withProductId(item.getProductId())
+                .withQuote(item.getQuote())
+                .withAmount(item.getAmount())
+                .build())
             .collect(Collectors.toList());
     }
 
@@ -85,19 +76,9 @@ public class OrderGrpcServer extends OrderServiceGrpc.OrderServiceImplBase {
             if (paymentRequest.hasTotal()) {
                 builder.withTotal(new BigDecimal(paymentRequest.getTotal().getValue()));
             }
-            if (paymentRequest.hasDateTime()) {
-                builder.withDateTime(toLocalDate(paymentRequest.getDateTime()));
-            }
             builder.withMethod(paymentRequest.getMethod());
         }
         return builder.build();
-    }
-
-    private static LocalDateTime toLocalDate(Timestamp ts) {
-        return Instant
-            .ofEpochSecond(ts.getSeconds(), ts.getNanos())
-            .atZone(ZoneId.ofOffset("UTC", ZoneOffset.UTC))
-            .toLocalDateTime();
     }
 
     @Override
@@ -148,7 +129,7 @@ public class OrderGrpcServer extends OrderServiceGrpc.OrderServiceImplBase {
         return OrderItemResponse.newBuilder()
             .setQuote(item.quote())
             .setProductId(item.productId())
-            .setAmount(toDecimal(item.amount()))
+            .setAmount(item.amount())
             .build();
     }
 
@@ -162,9 +143,5 @@ public class OrderGrpcServer extends OrderServiceGrpc.OrderServiceImplBase {
                 .build();
         }
         return null;
-    }
-
-    private static Decimal toDecimal(BigDecimal value) {
-        return Decimal.newBuilder().setValue(value.toString()).build();
     }
 }

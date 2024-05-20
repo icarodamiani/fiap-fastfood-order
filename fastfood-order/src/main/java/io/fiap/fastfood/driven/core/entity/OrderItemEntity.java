@@ -7,14 +7,14 @@ public record OrderItemEntity(
     String productId,
 
     @Field
-    Long amount,
+    Integer amount,
 
     @Field
     String quote) {
 
     public static final class OrderItemEntityBuilder {
         private String productId;
-        private Long amount;
+        private Integer amount;
         private String quote;
 
         private OrderItemEntityBuilder() {
@@ -30,7 +30,7 @@ public record OrderItemEntity(
             return this;
         }
 
-        public OrderItemEntityBuilder withAmount(Long amount) {
+        public OrderItemEntityBuilder withAmount(Integer amount) {
             this.amount = amount;
             return this;
         }

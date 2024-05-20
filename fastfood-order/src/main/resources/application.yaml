@@ -21,14 +21,14 @@ spring:
 payment:
   sqs:
     queue: ${PAYMENT_QUEUE_NAME:fastfood-payment-queue}
-  webhook: ${WEBHOOK_URL:http://localhost:8080/v1/payment/receive}
+  webhook: ${WEBHOOK_URL:http://localhost:8083/v1/payment/receive}
   client:
     connectionTimeout: 50000
     responseTimeout: 50000
     readTimeout: 50000
     writeTimeout: 50000
     maxConnections: 5
-    url: ${PAYMENT_URL:http://localhost:8081}
+    url: ${PAYMENT_URL:http://localhost:8084}
 
 management:
   endpoint:
