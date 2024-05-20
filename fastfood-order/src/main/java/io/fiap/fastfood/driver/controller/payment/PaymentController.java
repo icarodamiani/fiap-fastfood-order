@@ -47,7 +47,7 @@ public class PaymentController {
         @ApiResponse(responseCode = "404", description = "Not found", content = @Content)
     })
     public Mono<ResponseEntity<Void>> receive(@RequestBody PaymentDTO payment) {
-        return paymentUseCase.updateAsPaid(mapper.domainFromDto(payment))
+        return paymentUseCase.updatePaymentStatus(mapper.domainFromDto(payment))
             .map(ResponseEntity::ok)
             .defaultIfEmpty(ResponseEntity.notFound().build())
             .onErrorMap(e ->

@@ -6,18 +6,20 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
-@Document("pagamento")
+@Document("payment")
 public record PaymentEntity(
     @Id
     String id,
-    @Field("meio_pagamento")
+    @Field
     String method,
-    @Field("valor")
+    @Field
     BigDecimal total,
-    @Field("data_hora")
+    @Field
     LocalDateTime dateTime,
-    @Field("id_pedido")
-    String orderId) {
+    @Field
+    String orderId,
+    @Field
+    Boolean paid) {
 
     public static final class PaymentEntityBuilder {
         private String id;
@@ -25,6 +27,7 @@ public record PaymentEntity(
         private BigDecimal total;
         private LocalDateTime dateTime;
         private String orderId;
+        private Boolean paid;
 
         private PaymentEntityBuilder() {
         }
@@ -58,8 +61,13 @@ public record PaymentEntity(
             return this;
         }
 
+        public PaymentEntityBuilder withPaid(Boolean paid) {
+            this.paid = paid;
+            return this;
+        }
+
         public PaymentEntity build() {
-            return new PaymentEntity(id, method, total, dateTime, orderId);
+            return new PaymentEntity(id, method, total, dateTime, orderId, paid);
         }
     }
 

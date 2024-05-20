@@ -114,7 +114,8 @@
             <resource>
                 <directory>src/main/proto</directory>
                 <includes>
-                    <include>fastfood-customer.proto</include>
+                    <include>fastfood-order.proto</include>
+                    <include>fastfood-billing.proto</include>
                 </includes>
             </resource>
         </resources>

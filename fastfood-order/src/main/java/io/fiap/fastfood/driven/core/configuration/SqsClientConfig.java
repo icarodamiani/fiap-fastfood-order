@@ -1,9 +1,9 @@
 package io.fiap.fastfood.driven.core.configuration;
 
-import io.micrometer.core.instrument.util.StringUtils;
 import java.net.URI;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Function;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;

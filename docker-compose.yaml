@@ -15,17 +15,17 @@ services:
       MONGODB_ROOT_PASSWORD: rootpassword
     volumes:
       - 'mongodb_data:/fastfood'
-  sqs:
-    image: softwaremill/elasticmq:1.4.2
-    container_name: fastfood_order_sqs
-    ports:
-      - "9324:9324"
-      - "9325:9325"
-    volumes:
-      - ./sqs-compose.conf:/opt/elasticmq.conf
-      - sqs_data:/data/db
-    networks:
-      - fastfood-order-network
+##  sqs:
+##    image: softwaremill/elasticmq:1.4.2
+##    container_name: fastfood-order-sqs
+##    ports:
+##      - "9324:9324"
+##      - "9325:9325"
+##    volumes:
+##      - ./sqs-compose.conf:/opt/elasticmq.conf
+##      - sqs_data:/data/db
+##    networks:
+##      - fastfood-order-network
 
 volumes:
   mongodb_data:

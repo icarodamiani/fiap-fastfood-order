@@ -6,13 +6,13 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
 
-@Document("ponto_venda")
+@Document("billing")
 public record BillingEntity(
     @Id
     String id,
-    @Field("data_hora_abertura")
+    @Field
     LocalDateTime openAt,
-    @Field("data_hora_fechamento")
+    @Field
     LocalDateTime closedAt) {
 
     public static final class BillingEntityBuilder {

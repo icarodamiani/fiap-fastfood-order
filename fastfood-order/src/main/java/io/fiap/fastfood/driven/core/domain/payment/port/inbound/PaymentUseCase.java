@@ -4,5 +4,6 @@ import io.fiap.fastfood.driven.core.domain.model.Payment;
 import reactor.core.publisher.Mono;
 
 public interface PaymentUseCase {
-    Mono<Void> updateAsPaid(Payment payment);
+
+    Mono<Void> updatePaymentStatus(Payment payment);
 }

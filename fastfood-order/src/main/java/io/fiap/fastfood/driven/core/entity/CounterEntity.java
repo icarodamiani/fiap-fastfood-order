@@ -5,9 +5,9 @@ import org.springframework.data.mongodb.core.mapping.Field;
 
 @Document("counters")
 public record CounterEntity(
-    @Field("name")
+    @Field
     String name,
-    @Field("sequence")
+    @Field
     Long sequence) {
 
 

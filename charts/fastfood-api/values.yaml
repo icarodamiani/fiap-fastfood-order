@@ -5,7 +5,7 @@
 replicaCount: 1
 
 image:
-  repository: ghcr.io/icarodamiani/fiap-fastfood-customer
+  repository: ghcr.io/icarodamiani/fiap-fastfood-order
   pullPolicy: Always
   # Overrides the image tag whose default is the chart appVersion.
   tag: latest
@@ -66,14 +66,18 @@ tolerations: []
 affinity: {}
 
 secrets:
-  - name: CUSTOMER_DB_PASSWORD
-    key: customer-db-password
-    secret: customer-db
+  - name: MONGODB_PASSWORD
+    key: mongodb-root-password
+    secret: mongodb
 
 env:
-  - name: CUSTOMER_DB_USER
-    value: fastfood
-  - name: CUSTOMER_DB_URL
-    value: fastfood-customer
-  - name: CUSTOMER_DB_PORT
-    value: "5443"
+  - name: MONGODB_USERNAME
+    value: root
+  - name: MONGODB_HOST
+    value: mongodb
+  - name: MONGODB_PORT
+    value: "27017"
+  - name: PAYMENT_URL
+    value: http://payment-mock-api:8080
+  - name: WEBHOOK_URL
+    value: http://fastfood-api:8080/v1/payment/receive

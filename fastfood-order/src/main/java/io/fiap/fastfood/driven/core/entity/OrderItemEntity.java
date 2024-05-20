@@ -3,13 +3,13 @@ package io.fiap.fastfood.driven.core.entity;
 import org.springframework.data.mongodb.core.mapping.Field;
 
 public record OrderItemEntity(
-    @Field("id_produto")
+    @Field
     String productId,
 
-    @Field("quantidade")
+    @Field
     Long amount,
 
-    @Field("observacao")
+    @Field
     String quote) {
 
     public static final class OrderItemEntityBuilder {

@@ -8,7 +8,6 @@ import io.fiap.fastfood.FindOrderByIdRequest;
 import io.fiap.fastfood.OrderItemResponse;
 import io.fiap.fastfood.OrderResponse;
 import io.fiap.fastfood.OrderServiceGrpc;
-import io.fiap.fastfood.PaymentResponse;
 import io.fiap.fastfood.SaveOrderItemRequest;
 import io.fiap.fastfood.SaveOrderRequest;
 import io.fiap.fastfood.SavePaymentRequest;
@@ -26,6 +25,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import net.devh.boot.grpc.server.service.GrpcService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 
 @GrpcService
@@ -102,7 +102,7 @@ public class OrderGrpcServer extends OrderServiceGrpc.OrderServiceImplBase {
 
     @Override
     public void findAllOrders(FindAllOrderRequest request, StreamObserver<OrderResponse> responseObserver) {
-        service.findAll(Pageable.unpaged())
+        service.findAll(PageRequest.of(request.getPage(), request.getPageSize()))
             .doOnError(throwable -> responseObserver.onError(statusConverter.toGrpcException(throwable)))
             .map(order -> OrderResponse.newBuilder()
                 .setId(order.id())
@@ -142,15 +142,6 @@ public class OrderGrpcServer extends OrderServiceGrpc.OrderServiceImplBase {
             })
             .doOnSuccess(__ -> responseObserver.onCompleted())
             .subscribe();
-    }
-
-    private PaymentResponse toPaymentResponse(Payment payment) {
-        return PaymentResponse.newBuilder()
-            .setOrderId(payment.orderId())
-            .setMethod(payment.method())
-            .setDateTime(toTimestamp(payment.dateTime()))
-            .setTotal(toDecimal(payment.total()))
-            .build();
     }
 
     private OrderItemResponse toOrderItemResponse(OrderItem item) {

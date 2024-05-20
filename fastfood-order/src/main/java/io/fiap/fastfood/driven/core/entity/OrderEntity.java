@@ -6,17 +6,17 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
-@Document("pedido")
+@Document("order")
 public record OrderEntity(
     @Id
     String id,
-    @Field("id_cliente")
+    @Field
     String customerId,
-    @Field("items")
+    @Field
     List<OrderItemEntity> items,
-    @Field("data_hora")
+    @Field
     LocalDateTime createdAt,
-    @Field("numero_pedido")
+    @Field
     Long number) {
 
     public static final class OrderEntityBuilder {

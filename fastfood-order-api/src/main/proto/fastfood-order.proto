@@ -2,12 +2,12 @@ syntax = "proto3";
 
 package io.fiap.fastfood;
 
-import "/Users/icarodamiani/Workspace/gRPC/google/protobuf/empty.proto";
+/*import "/Users/icarodamiani/Workspace/gRPC/google/protobuf/empty.proto";
 import "/Users/icarodamiani/Workspace/gRPC/google/protobuf/timestamp.proto";
-import "/Users/icarodamiani/Workspace/gRPC/google/type/decimal.proto";
-/*import "google/protobuf/empty.proto";
+import "/Users/icarodamiani/Workspace/gRPC/google/type/decimal.proto";*/
+import "google/protobuf/empty.proto";
 import "google/protobuf/timestamp.proto";
-import "google/type/decimal.proto";*/
+import "google/type/decimal.proto";
 
 option java_package = "io.fiap.fastfood";
 option java_multiple_files = true;
@@ -45,6 +45,8 @@ message SavePaymentRequest {
 }
 
 message FindAllOrderRequest {
+    int32 page = 1;
+    int32 pageSize = 2;
 }
 
 message FindOrderByIdRequest {
@@ -63,11 +65,4 @@ message OrderItemResponse {
     string productId = 1;
     google.type.Decimal amount = 2;
     string quote = 3;
-}
-
-message PaymentResponse {
-    string method = 1;
-    google.type.Decimal total = 2;
-    google.protobuf.Timestamp dateTime = 3;
-    string orderId = 4;
 }
