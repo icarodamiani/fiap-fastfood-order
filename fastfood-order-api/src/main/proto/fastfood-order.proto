@@ -1,0 +1,65 @@
+syntax = "proto3";
+
+package io.fiap.fastfood;
+
+/*import "/Users/icarodamiani/Workspace/gRPC/google/protobuf/empty.proto";
+import "/Users/icarodamiani/Workspace/gRPC/google/protobuf/timestamp.proto";
+import "/Users/icarodamiani/Workspace/gRPC/google/type/decimal.proto";*/
+import "google/protobuf/empty.proto";
+import "google/protobuf/timestamp.proto";
+import "google/type/decimal.proto";
+
+option java_package = "io.fiap.fastfood";
+option java_multiple_files = true;
+option java_outer_classname = "OrderProto";
+
+/**
+* Order service
+* @author icaro.damiani1
+*/
+service OrderService {
+    rpc saveOrder(SaveOrderRequest) returns (OrderResponse);
+    rpc findAllOrders(FindAllOrderRequest) returns (stream OrderResponse);
+    rpc findOrderById(FindOrderByIdRequest) returns (OrderResponse);
+}
+
+message SaveOrderRequest {
+    optional string id = 1;
+    string customerId = 2;
+    SavePaymentRequest payment = 5;
+    repeated SaveOrderItemRequest items = 6;
+}
+
+message SaveOrderItemRequest {
+    string productId = 1;
+    int32 amount = 2;
+    string quote = 3;
+}
+
+message SavePaymentRequest {
+    string method = 1;
+    google.type.Decimal total = 2;
+}
+
+message FindAllOrderRequest {
+    int32 page = 1;
+    int32 pageSize = 2;
+}
+
+message FindOrderByIdRequest {
+    string id = 1;
+}
+
+message OrderResponse {
+    optional string id = 1;
+    string customerId = 2;
+    google.protobuf.Timestamp createdAt = 3;
+    string number = 4;
+    repeated OrderItemResponse items = 6;
+}
+
+message OrderItemResponse {
+    string productId = 1;
+    int32 amount = 2;
+    string quote = 3;
+}

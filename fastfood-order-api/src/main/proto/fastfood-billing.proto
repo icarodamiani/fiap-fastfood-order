@@ -1,0 +1,24 @@
+syntax = "proto3";
+
+package io.fiap.fastfood;
+
+import "google/protobuf/empty.proto";
+
+option java_package = "io.fiap.fastfood";
+option java_multiple_files = true;
+option java_outer_classname = "BillingProto";
+
+/**
+* Billing service
+* @author icaro.damiani1
+*/
+service BillingService {
+    rpc open(OpenBillingDayRequest) returns (google.protobuf.Empty);
+    rpc close(CloseBillingDayRequest) returns (google.protobuf.Empty);
+}
+
+message OpenBillingDayRequest {
+}
+
+message CloseBillingDayRequest {
+}
