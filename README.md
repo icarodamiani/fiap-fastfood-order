@@ -64,11 +64,15 @@ Seguem abaixo os passos:
 ```
 docker login registry-1.docker.io
 ```
-3 -
+3-
+```
+docker build . -t icarodamiani/fastfood-order:latest
+```
+4 -
 ```
 aws eks update-kubeconfig --name {CLUSTER_NAME} --region={AWS_REGION}
 ```
-4 -
+5 -
 ```
 helm upgrade --install fastfood-order charts/fastfood-order \
 --kubeconfig /home/runner/.kube/config \
