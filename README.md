@@ -74,7 +74,7 @@ helm upgrade --install fastfood-order charts/fastfood-order \
 --kubeconfig /home/runner/.kube/config \
 --set containers.image=icarodamiani/fastfood-bff \
 --set image.tag=latest \
---set database.mongodb.username.value=fastfood} \
+--set database.mongodb.username.value=fastfood \
 --set database.mongodb.host.value={AWS_DOCUMENTDB_HOST} \
 --set database.mongodb.password.value={AWS_DOCUMENTDB_PASSWORD}
 ```
