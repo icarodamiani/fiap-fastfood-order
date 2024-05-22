@@ -1,11 +1,11 @@
-# Default values for fastfood-api.
+# Default values for fastfood-order.
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
 replicaCount: 1
 
 image:
-  repository: ghcr.io/icarodamiani/fiap-fastfood-order
+  repository: icarodamiani/fastfood-order
   pullPolicy: Always
   # Overrides the image tag whose default is the chart appVersion.
   tag: latest
@@ -39,10 +39,42 @@ securityContext: {}
   # runAsNonRoot: true
   # runAsUser: 1000
 
+service:
+  type: ClusterIP
+  port: 8080
+
+ingress:
+  enabled: false
+  className: ""
+  annotations: {}
+    # kubernetes.io/ingress.class: nginx
+    # kubernetes.io/tls-acme: "true"
+  hosts:
+    - host: chart-example.local
+      paths:
+        - path: /
+          pathType: ImplementationSpecific
+  tls: []
+  #  - secretName: chart-example-tls
+  #    hosts:
+  #      - chart-example.local
+
+resources: {}
+  # We usually recommend not to specify default resources and to leave this as a conscious
+  # choice for the user. This also increases chances charts run on environments with little
+  # resources, such as Minikube. If you do want to specify resources, uncomment the following
+  # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+  # limits:
+  #   cpu: 100m
+  #   memory: 128Mi
+  # requests:
+  #   cpu: 100m
+  #   memory: 128Mi
+
 autoscaling:
-  enabled: true
+  enabled: false
   minReplicas: 1
-  maxReplicas: 3
+  maxReplicas: 100
   targetCPUUtilizationPercentage: 80
   # targetMemoryUtilizationPercentage: 80
 
@@ -65,19 +97,17 @@ tolerations: []
 
 affinity: {}
 
-secrets:
-  - name: MONGODB_PASSWORD
-    key: mongodb-root-password
-    secret: mongodb
-
-env:
-  - name: MONGODB_USERNAME
-    value: root
-  - name: MONGODB_HOST
-    value: mongodb
-  - name: MONGODB_PORT
-    value: "27017"
-  - name: PAYMENT_URL
-    value: http://payment-mock-api:8080
-  - name: WEBHOOK_URL
-    value: http://fastfood-api:8080/v1/payment/receive
+database:
+  mongodb:
+    username:
+      name: "MONGODB_USERNAME"
+      value: "fastfood"
+    password:
+      name: "MONGODB_PASSWORD"
+      value: "password"
+    host:
+      name: "MONGODB_HOST"
+      value: "mongodb"
+    port:
+      name: "MONGODB_PORT"
+      value: "27017"
