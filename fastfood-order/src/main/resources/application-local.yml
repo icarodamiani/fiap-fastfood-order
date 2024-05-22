@@ -11,3 +11,14 @@ server:
 grpc:
   server:
     port: 9091
+
+spring:
+  data:
+    mongodb:
+      port: 27017
+
+payment:
+  webhook: http://localhost:8081/v1/payment/receive
+  client:
+    mock:
+      url: http://localhost:8084
