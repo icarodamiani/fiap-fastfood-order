@@ -58,7 +58,7 @@ Seguem abaixo os passos:
 
 1 -
 ```
-./mvnw -s .m2/settings.xml clean install -Dmaven.test.skip=true -U -P dev
+./mvnw clean install -Dmaven.test.skip=true -U -P dev
 ```
 2 -
 ```
