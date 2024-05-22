@@ -33,24 +33,25 @@
         <project.scm.id>gh-release</project.scm.id>
     </properties>
 
+    <scm>
+        <connection>scm:git:https://github.com/icarodamiani/fiap-fastfood-order.git</connection>
+        <url>https://github.com/icarodamiani/fiap-fastfood-order.git</url>
+        <developerConnection>scm:git:https://github.com/icarodamiani/fiap-fastfood-order.git</developerConnection>
+        <tag>fastfood-order-parent-1.0.0</tag>
+    </scm>
+
     <distributionManagement>
         <repository>
             <id>gh-release</id>
             <name>releases</name>
-            <url>https://maven.pkg.github.com/icarodamiani/fiap-fastfood-customer</url>
+            <url>https://maven.pkg.github.com/icarodamiani/fiap-fastfood-order</url>
         </repository>
         <snapshotRepository>
             <id>gh-snapshot</id>
             <name>snapshots</name>
-            <url>https://maven.pkg.github.com/icarodamiani/fiap-fastfood-customer</url>
+            <url>https://maven.pkg.github.com/icarodamiani/fiap-fastfood-order</url>
         </snapshotRepository>
     </distributionManagement>
-
-    <scm>
-        <connection>scm:git:https://github.com/icarodamiani/fiap-fastfood-customer.git</connection>
-        <url>https://github.com/icarodamiani/fiap-fastfood-customer.git</url>
-        <developerConnection>scm:git:https://github.com/icarodamiani/fiap-fastfood-customer.git</developerConnection>
-    </scm>
 
     <dependencyManagement>
         <dependencies>
