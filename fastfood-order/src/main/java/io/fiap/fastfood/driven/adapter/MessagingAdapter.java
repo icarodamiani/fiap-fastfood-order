@@ -78,7 +78,7 @@ public class MessagingAdapter implements MessagingPort {
             ).flatMap(request -> Mono.fromFuture(sqsClient.receiveMessage(request)));
     }
 
-    public Mono<DeleteMessageResponse> ack(String queue, Message message) {
+    private Mono<DeleteMessageResponse> ack(String queue, Message message) {
         return getQueueUrl().apply(queue)
             .flatMap(q -> Mono.fromFuture(
                     sqsClient.deleteMessage(DeleteMessageRequest.builder()
