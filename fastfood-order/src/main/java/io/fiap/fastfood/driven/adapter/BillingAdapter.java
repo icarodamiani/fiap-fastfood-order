@@ -8,10 +8,11 @@ import io.fiap.fastfood.driven.core.entity.BillingEntity;
 import io.fiap.fastfood.driven.repository.BillingRepository;
 import java.time.LocalDateTime;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import reactor.core.publisher.Mono;
 
-@Component
+@Service
 public class BillingAdapter implements BillingPort {
 
     private final BillingRepository billingRepository;

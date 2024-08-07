@@ -1,9 +1,8 @@
 package io.fiap.fastfood.driven.adapter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.fiap.fastfood.driven.core.domain.model.Payment;
-import io.fiap.fastfood.driven.core.domain.payment.port.inbound.PaymentUseCase;
-import io.fiap.fastfood.driven.core.domain.payment.port.outbound.PaymentPort;
+import io.fiap.fastfood.driven.core.domain.model.OrderTracking;
+import io.fiap.fastfood.driven.core.domain.tracking.port.outbound.TrackingPort;
 import io.vavr.CheckedFunction1;
 import io.vavr.Function1;
 import org.slf4j.Logger;
@@ -18,24 +17,24 @@ import software.amazon.awssdk.services.sqs.model.GetQueueUrlResponse;
 import software.amazon.awssdk.services.sqs.model.SendMessageRequest;
 
 @Service
-public class PaymentAdapter implements PaymentPort {
+public class TrackingAdapter implements TrackingPort {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(PaymentAdapter.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(TrackingAdapter.class);
 
     private final SqsAsyncClient sqsClient;
     private final ObjectMapper objectMapper;
     private final String queue;
 
-    public PaymentAdapter(SqsAsyncClient sqsClient,
-                          ObjectMapper objectMapper,
-                          @Value("${aws.sqs.payment.queue}") String queue) {
+    public TrackingAdapter(SqsAsyncClient sqsClient,
+                           ObjectMapper objectMapper,
+                           @Value("${aws.sqs.tracking.queue}") String queue) {
         this.sqsClient = sqsClient;
         this.objectMapper = objectMapper;
         this.queue = queue;
     }
 
-    public Mono<Payment> publishPaymentCommand(Payment payment) {
-        return Mono.just(serializePayload().unchecked().apply(payment))
+    public Mono<OrderTracking> create(OrderTracking tracking) {
+        return Mono.just(serializePayload().unchecked().apply(tracking))
             .zipWith(getQueueUrl().apply(queue))
             .map(t -> buildMessageRequest().unchecked().apply(t))
             .doOnError(throwable -> LOGGER.error("Failed to prepare message due to error.", throwable))
@@ -44,7 +43,7 @@ public class PaymentAdapter implements PaymentPort {
             .doOnSuccess(response ->
                 LOGGER.debug("Message published to queue. Message ID: {} Body: {}", response.messageId(),
                     response.md5OfMessageBody()))
-            .map(response -> payment);
+            .map(response -> tracking);
     }
 
     private <T> CheckedFunction1<T, String> serializePayload() {

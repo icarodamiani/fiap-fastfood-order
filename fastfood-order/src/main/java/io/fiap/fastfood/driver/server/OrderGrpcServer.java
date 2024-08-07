@@ -7,9 +7,11 @@ import io.fiap.fastfood.FindOrderByIdRequest;
 import io.fiap.fastfood.OrderItemResponse;
 import io.fiap.fastfood.OrderResponse;
 import io.fiap.fastfood.OrderServiceGrpc;
+import io.fiap.fastfood.SaveCustomerRequest;
 import io.fiap.fastfood.SaveOrderItemRequest;
 import io.fiap.fastfood.SaveOrderRequest;
 import io.fiap.fastfood.SavePaymentRequest;
+import io.fiap.fastfood.driven.core.domain.model.Customer;
 import io.fiap.fastfood.driven.core.domain.model.Order;
 import io.fiap.fastfood.driven.core.domain.model.OrderItem;
 import io.fiap.fastfood.driven.core.domain.model.Payment;
@@ -20,6 +22,7 @@ import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 import net.devh.boot.grpc.server.service.GrpcService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,7 +44,7 @@ public class OrderGrpcServer extends OrderServiceGrpc.OrderServiceImplBase {
     @Override
     public void saveOrder(SaveOrderRequest request, StreamObserver<OrderResponse> responseObserver) {
         service.create(Order.OrderBuilder.builder()
-                .withCustomerId(request.getCustomerId())
+                .withCustomer(toCustomer(request.getCustomer()))
                 .withPayment(toPayment(request.getPayment()))
                 .withItems(toOrderItems(request.getItemsList()))
                 .build())
@@ -81,6 +84,22 @@ public class OrderGrpcServer extends OrderServiceGrpc.OrderServiceImplBase {
         return builder.build();
     }
 
+    private static Customer toCustomer(SaveCustomerRequest customerRequest) {
+        var builder = Customer.CustomerBuilder.builder();
+        if (customerRequest.isInitialized()) {
+            if (customerRequest.hasId()) {
+                builder.withId(customerRequest.getId());
+            }
+            builder.withName(customerRequest.getName());
+            builder.withEmail(customerRequest.getEmail());
+            if (customerRequest.hasPhone()) {
+                builder.withPhone(customerRequest.getPhone());
+            }
+            builder.withVat(customerRequest.getVat());
+        }
+        return builder.build();
+    }
+
     @Override
     public void findAllOrders(FindAllOrderRequest request, StreamObserver<OrderResponse> responseObserver) {
         service.findAll(PageRequest.of(request.getPage(), request.getPageSize()))
@@ -88,7 +107,7 @@ public class OrderGrpcServer extends OrderServiceGrpc.OrderServiceImplBase {
             .map(order -> OrderResponse.newBuilder()
                 .setId(order.id())
                 .setCreatedAt(toTimestamp(order.createdAt()))
-                .setCustomerId(order.customerId())
+                .setCustomerId(order.getCustomer().orElse(Customer.CustomerBuilder.builder().build()).id())
                 .setNumber(order.number())
                 .addAllItems(order.items().stream()
                     .map(this::toOrderItemResponse)
@@ -110,7 +129,7 @@ public class OrderGrpcServer extends OrderServiceGrpc.OrderServiceImplBase {
             .map(order -> OrderResponse.newBuilder()
                 .setId(order.id())
                 .setCreatedAt(toTimestamp(order.createdAt()))
-                .setCustomerId(order.customerId())
+                .setCustomerId(order.getCustomer().orElse(Customer.CustomerBuilder.builder().build()).id())
                 .setNumber(order.number())
                 .addAllItems(order.items().stream()
                     .map(this::toOrderItemResponse)

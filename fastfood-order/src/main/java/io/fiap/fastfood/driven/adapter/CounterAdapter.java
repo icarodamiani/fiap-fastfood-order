@@ -8,9 +8,10 @@ import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
 
-@Component
+@Service
 public class CounterAdapter implements CounterPort {
 
     private final ReactiveMongoOperations mongoOperations;

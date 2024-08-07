@@ -26,8 +26,9 @@ service OrderService {
 message SaveOrderRequest {
     optional string id = 1;
     string customerId = 2;
-    SavePaymentRequest payment = 5;
-    repeated SaveOrderItemRequest items = 6;
+    optional SaveCustomerRequest customer = 3;
+    SavePaymentRequest payment = 4;
+    repeated SaveOrderItemRequest items = 5;
 }
 
 message SaveOrderItemRequest {
@@ -39,6 +40,14 @@ message SaveOrderItemRequest {
 message SavePaymentRequest {
     string method = 1;
     google.type.Decimal total = 2;
+}
+
+message SaveCustomerRequest {
+    optional string id = 1;
+    string name = 2;
+    string vat = 3;
+    string email = 4;
+    optional string phone = 5;
 }
 
 message FindAllOrderRequest {
