@@ -20,7 +20,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Pageable;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import reactor.core.publisher.Flux;
@@ -73,6 +72,11 @@ public class OrderAdapter implements OrderPort {
 
     @Override
     public Flux<Message> readOrder(Function1<Order, Mono<Order>> handle) {
+        return messagingPort.read(queue, handle, readEvent());
+    }
+
+    @Override
+    public Flux<Message> readOrderCancel(Function1<Order, Mono<Order>> handle) {
         return messagingPort.read(queue, handle, readEvent());
     }
 

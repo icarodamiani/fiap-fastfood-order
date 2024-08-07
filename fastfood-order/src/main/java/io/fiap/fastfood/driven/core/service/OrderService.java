@@ -77,6 +77,15 @@ public class OrderService implements OrderUseCase {
             );
     }
 
+    @Override
+    public Flux<Message> handleCancelEvent() {
+        return orderPort.readOrderCancel(handleCancel());
+    }
+
+    private Function1<Order, Mono<Order>> handleCancel() {
+        return Mono::just;
+    }
+
     private Function1<Order, OrderTracking> toTracking() {
         return order -> OrderTracking.OrderTrackingBuilder.builder()
             .withOrderId(order.id())

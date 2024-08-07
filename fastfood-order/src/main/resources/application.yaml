@@ -27,6 +27,8 @@ aws:
       queue: ${TRACKING_QUEUE_NAME:tracking_queue}
     order:
       queue: ${ORDER_QUEUE_NAME:order_queue}
+    order-cancel:
+      queue: ${ORDER_CANCEL_QUEUE_NAME:order_cancel_queue}
     payment:
       queue: ${PAYMENT_QUEUE_NAME:payment_queue}
     customer:

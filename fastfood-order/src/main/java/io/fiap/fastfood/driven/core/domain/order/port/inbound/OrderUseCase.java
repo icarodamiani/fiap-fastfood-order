@@ -11,6 +11,8 @@ public interface OrderUseCase {
 
     Flux<Message> handleEvent();
 
+    Flux<Message> handleCancelEvent();
+
     Flux<Order> findAll(Pageable pageable);
 
     Mono<Order> findById(String id);

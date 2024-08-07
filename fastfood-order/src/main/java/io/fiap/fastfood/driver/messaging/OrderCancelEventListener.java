@@ -19,23 +19,23 @@ import reactor.core.scheduler.Schedulers;
 
 
 @Component
-public class OrderEventListener implements CommandLineRunner {
+public class OrderCancelEventListener implements CommandLineRunner {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(OrderEventListener.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(OrderCancelEventListener.class);
 
     private final SimpleTriggerContext triggerContext;
     private final PeriodicTrigger trigger;
     private final Scheduler boundedElastic;
     private final OrderUseCase service;
 
-    public OrderEventListener(@Value("${application.consumer.delay:10000}")
-                                     String delay,
-                                 @Value("${application.consumer.poolSize:1}")
-                                     String poolSize,
-                              OrderUseCase service) {
+    public OrderCancelEventListener(@Value("${application.consumer.delay:10000}")
+                                    String delay,
+                                    @Value("${application.consumer.poolSize:1}")
+                                    String poolSize,
+                                    OrderUseCase service) {
         this.service = service;
         boundedElastic = Schedulers.newBoundedElastic(Integer.parseInt(poolSize), 10000,
-            "orderUpdateListenerPool", 600, true);
+            "orderCancelListenerPool", 600, true);
 
         this.triggerContext = new SimpleTriggerContext();
         this.trigger = new PeriodicTrigger(Long.parseLong(delay), TimeUnit.MILLISECONDS);
@@ -60,7 +60,7 @@ public class OrderEventListener implements CommandLineRunner {
                             Objects.requireNonNull(triggerContext.lastScheduledExecutionTime()),
                             new Date(),
                             null))
-                    .flatMapMany(__ -> service.handleEvent())
+                    .flatMapMany(__ -> service.handleCancelEvent())
                     .doOnComplete(() -> triggerContext.update(
                         Objects.requireNonNull(triggerContext.lastScheduledExecutionTime()),
                         Objects.requireNonNull(triggerContext.lastActualExecutionTime()),

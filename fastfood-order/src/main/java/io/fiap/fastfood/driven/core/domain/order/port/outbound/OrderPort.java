@@ -14,6 +14,8 @@ public interface OrderPort {
 
     Flux<Message> readOrder(Function1<Order, Mono<Order>> handle);
 
+    Flux<Message> readOrderCancel(Function1<Order, Mono<Order>> handle);
+
     Mono<Order> createOrder(Order order);
 
     Mono<Order> updateOrder(String id, String operations);
