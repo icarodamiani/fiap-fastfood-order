@@ -5,5 +5,5 @@ import reactor.core.publisher.Mono;
 
 public interface PaymentUseCase {
 
-    Mono<Void> updatePaymentStatus(Payment payment);
+    Mono<Void> create(Payment payment);
 }

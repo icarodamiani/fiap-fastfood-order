@@ -5,8 +5,6 @@ import reactor.core.publisher.Mono;
 
 public interface PaymentPort {
 
-    Mono<Payment> createPayment(Payment order);
-
-    Mono<Payment> updatePayment(String id, String operations);
+    Mono<Payment> publishPaymentCommand(Payment payment);
 
 }

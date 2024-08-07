@@ -6,27 +6,31 @@ import java.util.Optional;
 
 public record Order(
     String id,
-    String customerId,
+    Customer customer,
     List<OrderItem> items,
     LocalDateTime createdAt,
     String number,
     Payment payment) {
 
-    Optional<String> getId() {
+    public Optional<String> getId() {
         return Optional.ofNullable(id());
     }
 
-    Optional<String> getNumber() {
+    public Optional<Customer> getCustomer() {
+        return Optional.ofNullable(customer());
+    }
+
+    public Optional<String> getNumber() {
         return Optional.ofNullable(number());
     }
 
-    Optional<Payment> getPayment() {
+    public Optional<Payment> getPayment() {
         return Optional.ofNullable(payment());
     }
 
     public static final class OrderBuilder {
         private String id;
-        private String customerId;
+        private Customer customer;
         private List<OrderItem> items;
         private LocalDateTime createdAt;
         private String number;
@@ -45,7 +49,7 @@ public record Order(
                 .withNumber(order.number)
                 .withCreatedAt(order.createdAt)
                 .withItems(order.items)
-                .withCustomerId(order.customerId);
+                .withCustomer(order.customer);
         }
 
         public OrderBuilder withId(String id) {
@@ -53,8 +57,8 @@ public record Order(
             return this;
         }
 
-        public OrderBuilder withCustomerId(String customerId) {
-            this.customerId = customerId;
+        public OrderBuilder withCustomer(Customer customer) {
+            this.customer = customer;
             return this;
         }
 
@@ -79,7 +83,7 @@ public record Order(
         }
 
         public Order build() {
-            return new Order(id, customerId, items, createdAt, number, payment);
+            return new Order(id, customer, items, createdAt, number, payment);
         }
     }
 }

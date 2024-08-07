@@ -4,9 +4,12 @@ import io.fiap.fastfood.driven.core.domain.model.Order;
 import org.springframework.data.domain.Pageable;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import software.amazon.awssdk.services.sqs.model.Message;
 
 public interface OrderUseCase {
     Mono<Order> create(Order value);
+
+    Flux<Message> handleEvent();
 
     Flux<Order> findAll(Pageable pageable);
 
