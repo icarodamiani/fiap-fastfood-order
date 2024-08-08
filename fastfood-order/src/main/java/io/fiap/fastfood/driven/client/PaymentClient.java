@@ -33,7 +33,7 @@ public class PaymentClient {
                 .withId(payment.id())
                 .withAmount(payment.total())
                 .withMethod("MercadoPago")
-                .withOrderId(payment.orderId())
+                .withOrderNumber(payment.orderNumber())
                 .withStatus("WAITING")
                 .withDateTime(LocalDateTime.now())
                 .withWebhook(webhook)

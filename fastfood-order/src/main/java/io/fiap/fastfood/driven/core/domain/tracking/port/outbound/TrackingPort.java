@@ -5,6 +5,6 @@ import reactor.core.publisher.Mono;
 
 public interface TrackingPort {
 
-    Mono<OrderTracking> create(OrderTracking tracking);
+    Mono<OrderTracking> publishTracking(OrderTracking tracking);
 
 }

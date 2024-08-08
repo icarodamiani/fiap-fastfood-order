@@ -51,7 +51,6 @@ public class OrderGrpcServer extends OrderServiceGrpc.OrderServiceImplBase {
             .doOnError(throwable -> responseObserver.onError(statusConverter.toGrpcException(throwable)))
             .map(order ->
                 OrderResponse.newBuilder()
-                    .setId(order.id())
                     .setNumber(order.number())
                     .build()
             )

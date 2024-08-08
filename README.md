@@ -23,15 +23,6 @@ Termos utilizados na implementação (Presentes em Código)
 
 ## Operações
 
-### [Faturamento]([BillingController.java](fastfood-api%2Fsrc%2Fmain%2Fjava%2Fio%2Ffiap%2Ffastfood%2Fdriver%2Fcontroller%2Fbilling%2FBillingController.java))
-Tratando-se apenas de um esboço, prevê a abertura e o fechamento de um dia contábil.
-
-Um dia pode ser aberto ao se chamar a operação "open" e fechado chamando o método "close", ambos do serviço BillingService, este exposto via gRPC e descrito aqui [fastfood-billing.proto](fastfood-order-api%2Fsrc%2Fmain%2Fproto%2Ffastfood-billing.proto).
-
-
-#### Contador de pedidos
-Ao se abrir/fechar um dia contábil o contador de pedidos é zerado, gerando assim números mais amigáveis aos clientes.
-
 ### [Pedido e Pagamento]([OrderController.java](fastfood-api%2Fsrc%2Fmain%2Fjava%2Fio%2Ffiap%2Ffastfood%2Fdriver%2Fcontroller%2Forder%2FOrderController.java))
 Uma criação de um novo pedido, é sempre acompanhada das informações necessárias ao encaminhamento de um pagamento. Por isso, a fim de se manter a persistência em uma única transação, um mesmo endpoint compreende a criação de ambas as entidades.
 Uma vez persistidas as informações de pedido e pagamento, uma requisição é enviada ao parceiro de pagamentos.

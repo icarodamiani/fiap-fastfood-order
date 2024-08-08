@@ -49,7 +49,8 @@ public record Order(
                 .withNumber(order.number)
                 .withCreatedAt(order.createdAt)
                 .withItems(order.items)
-                .withCustomer(order.customer);
+                .withCustomer(order.customer)
+                .withPayment(order.payment);
         }
 
         public OrderBuilder withId(String id) {
